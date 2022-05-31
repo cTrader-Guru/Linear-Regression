@@ -19,32 +19,17 @@ namespace cAlgo
     public class LinearRegression : Indicator
     {
 
-        #region Enums
-
-        // --> Eventuali enumeratori li mettiamo qui
-
-        #endregion
-
         #region Identity
 
-        /// <summary>
-        /// Nome del prodotto, identificativo, da modificare con il nome della propria creazione
-        /// </summary>
         public const string NAME = "Linear Regression";
 
-        /// <summary>
-        /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
-        /// </summary>
         public const string VERSION = "1.0.1";
 
         #endregion
 
         #region Params
 
-        /// <summary>
-        /// Identità del prodotto nel contesto di ctrader.guru
-        /// </summary>
-        [Parameter(NAME + " " + VERSION, Group = "Identity", DefaultValue = "https://ctrader.guru/product/linear-regression/")]
+        [Parameter(NAME + " " + VERSION, Group = "Identity", DefaultValue = "https://www.google.com/search?q=ctrader+guru+linear+regression")]
         public string ProductInfo { get; set; }
 
         [Parameter("Period", Group = "Params", DefaultValue = 120)]
@@ -67,27 +52,15 @@ namespace cAlgo
 
         #endregion
 
-        #region Property
-
-        #endregion
-
         #region Indicator Events
 
-        /// <summary>
-        /// Viene generato all'avvio dell'indicatore, si inizializza l'indicatore
-        /// </summary>
         protected override void Initialize()
         {
 
-            // --> Stampo nei log la versione corrente
             Print("{0} : {1}", NAME, VERSION);
 
         }
 
-        /// <summary>
-        /// Generato ad ogni tick, vengono effettuati i calcoli dell'indicatore
-        /// </summary>
-        /// <param name="index">L'indice della candela in elaborazione</param>
         public override void Calculate(int index)
         {
 
@@ -102,7 +75,6 @@ namespace cAlgo
 
         private void LinearRegressionTo(DataSeries series)
         {
-            // Linear regresion
 
             double sum_x = 0, sum_x2 = 0, sum_y = 0, sum_xy = 0;
 
@@ -120,9 +92,6 @@ namespace cAlgo
             double a = (Period * sum_xy - sum_x * sum_y) / (Period * sum_x2 - sum_x * sum_x);
             double b = (sum_y - a * sum_x) / Period;
 
-
-            // Calculate maximum and standard devaitions
-
             double maxDeviation = 0;
             double sumDevation = 0;
 
@@ -135,7 +104,6 @@ namespace cAlgo
 
             double stdDeviation = Math.Sqrt(sumDevation / Period);
 
-            // draw in future
             end += 20;
 
             double pr1 = a * start + b;
@@ -157,8 +125,8 @@ namespace cAlgo
                 Chart.DrawTrendLine("dev-top", start, pr1 + stdDeviation, end, pr2 + stdDeviation, Color.FromName(MyColor), LineThickness, LineStyle.DotsVeryRare);
                 Chart.DrawTrendLine("dev-bottom", start, pr1 - stdDeviation, end, pr2 - stdDeviation, Color.FromName(MyColor), LineThickness, LineStyle.DotsVeryRare);
             }
-        }
 
+        }
 
         #endregion
 
